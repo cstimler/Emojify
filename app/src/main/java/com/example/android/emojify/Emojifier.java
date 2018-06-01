@@ -45,11 +45,9 @@ class Emojifier {
                 .build();
 
         // Build the frame
+
         Frame frame = new Frame.Builder().setBitmap(picture).build();
-
-        // Detect the faces
         SparseArray<Face> faces = detector.detect(frame);
-
         // Log the number of faces
         Log.d(LOG_TAG, "detectFaces: number of faces = " + faces.size());
 
@@ -57,12 +55,26 @@ class Emojifier {
         if(faces.size() == 0){
             Toast.makeText(context, R.string.no_faces_message, Toast.LENGTH_SHORT).show();
         }
-
         // TODO (2): Iterate through the faces, calling getClassifications() for each face.
+        for (int i = 0; i < faces.size(); i++) {
+           // .valueAt() is the appropriate method, do not use .get()
+            getClassifications(faces.valueAt(i));
+
+        }
 
         // Release the detector
         detector.release();
+        faces.clear();
     }
 
     // TODO (1): Create a static method called getClassifications() which logs the probability of each eye being open and that the person is smiling.
+    public static void getClassifications(Face face) {
+        float rightEyeOpenProb = face.getIsRightEyeOpenProbability();
+        float leftEyeOpenProb = face.getIsLeftEyeOpenProbability();
+        float mouthSmilingProb = face.getIsSmilingProbability();
+    // One can read off the Logcat
+        Log.d(LOG_TAG, "The probability that the right eye is open is = " + rightEyeOpenProb);
+        Log.d(LOG_TAG, "The probability that the left eye is open is = " + leftEyeOpenProb);
+        Log.d(LOG_TAG, "The probability that the mouth is smiling is = " + mouthSmilingProb);
+    }
 }
