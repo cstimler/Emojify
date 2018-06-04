@@ -42,6 +42,7 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,8 +75,10 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         // TODO (2): Set up Timber
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
     }
-
     /**
      * OnClick method for "Emojify Me!" Button. Launches the camera app.
      */
